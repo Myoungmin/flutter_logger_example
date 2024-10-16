@@ -1,18 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_logger_example/file_logger.dart';
 
-void main() {
-  runApp(const MainApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final logger = FileLogger();
+
+  runApp(MyApp(logger));
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+class MyApp extends StatelessWidget {
+  final FileLogger logger;
+
+  const MyApp(this.logger, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    logger.logInfo("앱 시작됨");
+
+    return MaterialApp(
       home: Scaffold(
+        appBar: AppBar(
+          title: const Text("Cross Platform Logger Example"),
+        ),
         body: Center(
-          child: Text('Hello World!'),
+          child: ElevatedButton(
+            onPressed: () {
+              logger.logDebug("버튼 클릭됨");
+            },
+            child: const Text("로그 기록하기"),
+          ),
         ),
       ),
     );
